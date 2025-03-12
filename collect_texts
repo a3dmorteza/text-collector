@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# دایرکتوری جاری
+current_directory=$(pwd)
+
+# نام فایل خروجی
+output_file="collected_content.txt"
+
+# پاک کردن فایل خروجی قبلی اگر وجود داشته باشد
+> "$output_file"
+
+# استفاده از find برای جستجوی تمام فایل‌های غیر پنهان در دایرکتوری جاری و زیر دایرکتوری‌های غیر پنهان
+find "$current_directory" -type f ! -name '.*' -not -path '*/.*' | while read -r file; do
+    # اضافه کردن جداکننده با نام فایل به فایل خروجی
+    echo "=== File: $file ===" >> "$output_file"
+    # اضافه کردن محتوای فایل به فایل خروجی
+    cat "$file" >> "$output_file"
+    echo -e "\n" >> "$output_file" # اضافه کردن خط جدید بعد از هر فایل
+done
+
+echo "Contents collected in $output_file"
